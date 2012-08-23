@@ -44,6 +44,7 @@ public class Interprete {
      */
     public String decode(String cmd){
         try {
+            //tutti i comandi finiscono per ';'
             String command=cmd.substring(0,cmd.indexOf(";"));
             System.out.println("Eseguo: "+command);
             Runtime.getRuntime().exec(command);
