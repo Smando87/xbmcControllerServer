@@ -19,6 +19,9 @@ public class XbmcControllerServer {
      */
     public static void main(String[] args) {
        
+        
+        Libreria l=new Libreria();
+        l.show();
         int port=9021;
         Server srv=new Server(port);
         

@@ -71,7 +71,7 @@ public class Sessione extends Thread{
          
 
         } catch (IOException ex) {
-            Logger.getLogger(Sessione.class.getName()).log(Level.SEVERE, null, ex);
+           // Logger.getLogger(Sessione.class.getName()).log(Level.SEVERE, null, ex);
         }
         
        

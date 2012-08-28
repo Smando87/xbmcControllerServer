@@ -5,6 +5,8 @@
 package xbmCcontrollerServer;
 
 
+import java.io.File;
+import java.io.FileFilter;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -47,8 +49,22 @@ public class Interprete {
             //tutti i comandi finiscono per ';'
             
             String command=cmd.substring(0,cmd.indexOf(";"));
-            System.out.println("Eseguo: "+command);
-            Runtime.getRuntime().exec(command);
+            if(command.equals("esegui")){
+                 System.out.println("Eseguo: "+cmd.substring(cmd.indexOf(";")+1));
+                 Runtime.getRuntime().exec(cmd.substring(cmd.indexOf(";")+1));
+            }
+             if(command.equals("lista_film")){
+                 //FileFilter filter=new FileFilter("*.avi");
+                 File f = new File("/home/daniele");
+                 File[] files=f.listFiles();
+                 String filesString = "";
+                 for(int i =0; i< files.length;i++)
+                     if(files[i].getName().contains(".avi"))
+                        filesString+=files[i].getName()+"\n";
+                 System.out.println(filesString);
+                 return "lista_film;"+filesString;
+             }
+           
                       
         } catch (IOException ex) {
             Logger.getLogger(Interprete.class.getName()).log(Level.SEVERE, null, ex);
