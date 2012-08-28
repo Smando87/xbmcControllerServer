@@ -174,6 +174,7 @@ public class Libreria extends javax.swing.JFrame {
        this.jFileChooser1.showOpenDialog(this);
        File cartella=this.jFileChooser1.getSelectedFile();
        this.jTextPane1.setText( this.jTextPane1.getText()+cartella.getAbsolutePath()+"\n");
+       Costanti.percorsi=this.jTextPane1.getText();
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed

@@ -55,12 +55,18 @@ public class Interprete {
             }
              if(command.equals("lista_film")){
                  //FileFilter filter=new FileFilter("*.avi");
-                 File f = new File("/home/daniele");
-                 File[] files=f.listFiles();
+                 String[] percorsi=Costanti.percorsi.split("\n");
+               //  File[] cartelle= new File[percorsi.length];
                  String filesString = "";
-                 for(int i =0; i< files.length;i++)
-                     if(files[i].getName().contains(".avi"))
-                        filesString+=files[i].getName()+"\n";
+                 File f;
+                 for(int j = 0; j< percorsi.length;j++){                    
+                    f= new File(percorsi[j]);
+                    File[] files=f.listFiles();  
+                    for(int i =0; i< files.length;i++)
+                        if(files[i].getName().contains(".avi"))
+                            filesString+=files[i].getName()+"\n";
+                    
+                 }
                  System.out.println(filesString);
                  return "lista_film;"+filesString;
              }
