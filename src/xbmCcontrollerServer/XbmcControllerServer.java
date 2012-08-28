@@ -22,12 +22,7 @@ public class XbmcControllerServer {
         
         Libreria l=new Libreria();
         l.show();
-        int port=9021;
-        Server srv=new Server(port);
-        
-        System.out.println("Avvio xbmcController "+getRbTok("VERSIONE")+"."+getRbTok("BUILD")+" sulla porta: "+port);
-        
-        srv.start();
+       
     }
     
     
