@@ -50,11 +50,23 @@ public class Interprete {
             
             String command=cmd.substring(0,cmd.indexOf(";"));
             if(command.equals("esegui")){
-                 System.out.println("Eseguo: "+cmd.substring(cmd.indexOf(";")+1));
-                 Runtime.getRuntime().exec(cmd.substring(cmd.indexOf(";")+1));
+                System.out.println("Eseguo: "+cmd.substring(cmd.indexOf(";")+1));
+                Runtime.getRuntime().exec(cmd.substring(cmd.indexOf(";")+1));
             }
-             if(command.equals("lista_film")){
-                 //FileFilter filter=new FileFilter("*.avi");
+            if(command.equals("lista_film")){
+                return lista_film();
+            }
+           
+                      
+        } catch (IOException ex) {
+            Logger.getLogger(Interprete.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return "";
+    }
+    
+    
+    public String lista_film(){
+      //FileFilter filter=new FileFilter("*.avi");
                  String[] percorsi=Costanti.percorsi.split("\n");
                //  File[] cartelle= new File[percorsi.length];
                  String filesString = "";
@@ -69,17 +81,6 @@ public class Interprete {
                  }
                  System.out.println(filesString);
                  return "lista_film;"+filesString;
-             }
-           
-                      
-        } catch (IOException ex) {
-            Logger.getLogger(Interprete.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        return "";
     }
-    
-    
-    
-     
-    
+       
 }

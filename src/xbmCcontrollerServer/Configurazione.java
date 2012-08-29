@@ -13,6 +13,7 @@ import java.util.Properties;
 /**
  *
  * @author sdelprete
+ * Gestisce il savataggio e il caricamento della configurazione da file
  */
 public class Configurazione {
     
@@ -23,11 +24,6 @@ public class Configurazione {
         this.cfg_file = cfg_file;
     }
     
-    public void inizializza() throws FileNotFoundException, IOException{
-        Properties defaultProps = new Properties();
-        defaultProps.setProperty("percorsi", "test");
-        defaultProps.storeToXML(new FileOutputStream(cfg_file), "Configurazione server");
-    }
     
     public void salvaSuFile() throws IOException{
         Properties defaultProps = new Properties();

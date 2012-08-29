@@ -7,6 +7,7 @@ package xbmCcontrollerServer;
 /**
  *
  * @author sdelprete
+ * Raggruppo qui tutte le variabili statiche accessibili da tutte le classi
  */
 public class Costanti {
     
