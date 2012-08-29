@@ -101,7 +101,7 @@ public class Logger {
                 c=new Color(255,106,0);
             if(TYPE.contains("DEBUG"))
                 c=Color.BLUE;
-             if(module.toString().equalsIgnoreCase("Exceprion"))
+            if(module.toString().equalsIgnoreCase("Exception"))
                 c=Color.RED; 
         }
         StyleContext sc = StyleContext.getDefaultStyleContext(); 

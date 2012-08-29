@@ -5,8 +5,11 @@
 package xbmCcontrollerServer;
 
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.MissingResourceException;
 import java.util.ResourceBundle;
+import java.util.logging.Level;
 
 import javax.swing.JFileChooser;
 import javax.swing.ListModel;
@@ -23,7 +26,52 @@ public class Libreria extends javax.swing.JFrame {
      * Creates new form Libreria
      */
     public Libreria() {
+        
+        //Setto il tema (Nimbus) - in java il tema è il "Look and Feel"
+          //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
+        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
+         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
+         */
+        try {
+            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
+                if ("Nimbus".equals(info.getName())) {
+                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
+                    break;
+                }
+            }
+        } catch (ClassNotFoundException ex) {
+            java.util.logging.Logger.getLogger(Libreria.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (InstantiationException ex) {
+            java.util.logging.Logger.getLogger(Libreria.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (IllegalAccessException ex) {
+            java.util.logging.Logger.getLogger(Libreria.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
+            java.util.logging.Logger.getLogger(Libreria.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        }
+        //</editor-fold>
+
+        //creo la grafica
         initComponents();
+        
+        //inizializzo il logger
+        log= new Logger(true, "", "xbmcController.log", jTextPane3);       
+        
+        //bilito i messaggi di debug
+        log.DEBUG=true;
+        log.toScreen("Applicazione avviata...", this.getClass(), Logger.INFO);
+        
+        //carico la configurazione da file
+        Configurazione carica=new Configurazione(Costanti.cfg_file);
+        try {
+            carica.caricaDaFile();
+        } catch (FileNotFoundException ex) {
+            java.util.logging.Logger.getLogger(Libreria.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            java.util.logging.Logger.getLogger(Libreria.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        //visualizzo a video i percorsi di ricerca caricati dalla configurazione
+        this.jTextPane1.setText(Costanti.percorsi);
     }
 
     /**
@@ -95,6 +143,16 @@ public class Libreria extends javax.swing.JFrame {
             }
         });
 
+        jTextPane1.addComponentListener(new java.awt.event.ComponentAdapter() {
+            public void componentShown(java.awt.event.ComponentEvent evt) {
+                jTextPane1ComponentShown(evt);
+            }
+        });
+        jTextPane1.addPropertyChangeListener(new java.beans.PropertyChangeListener() {
+            public void propertyChange(java.beans.PropertyChangeEvent evt) {
+                jTextPane1PropertyChange(evt);
+            }
+        });
         jScrollPane1.setViewportView(jTextPane1);
 
         jLabel2.setText("Filtro(uno per riga)");
@@ -103,6 +161,11 @@ public class Libreria extends javax.swing.JFrame {
         jScrollPane2.setViewportView(jTextPane2);
 
         jButton3.setText("Salva");
+        jButton3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton3ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -111,10 +174,10 @@ public class Libreria extends javax.swing.JFrame {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                         .addGroup(jPanel1Layout.createSequentialGroup()
                             .addComponent(jLabel2)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                             .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 343, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGroup(jPanel1Layout.createSequentialGroup()
                             .addComponent(jLabel1)
@@ -128,19 +191,20 @@ public class Libreria extends javax.swing.JFrame {
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addContainerGap(20, Short.MAX_VALUE)
+                .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(jLabel1)
-                        .addComponent(jButton1)))
-                .addGap(18, 18, 18)
+                        .addComponent(jButton1))
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(19, 19, 19)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel2))
-                .addGap(37, 37, 37)
-                .addComponent(jButton3)
-                .addGap(92, 92, 92))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(jLabel2)
+                        .addGap(101, 101, 101)
+                        .addComponent(jButton3))
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(113, Short.MAX_VALUE))
         );
 
         jTabbedPane1.addTab("Configurazione", jPanel1);
@@ -169,7 +233,8 @@ public class Libreria extends javax.swing.JFrame {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         
-       
+       //Apro il percorso con una finestra di dialogo e lo visualizzo nel TextPane
+        
        this.jFileChooser1.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY );     
        this.jFileChooser1.showOpenDialog(this);
        File cartella=this.jFileChooser1.getSelectedFile();
@@ -178,14 +243,37 @@ public class Libreria extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        int port=9021;
-        Server srv=new Server(port);
+        
+        //ini<zializzo ed avvio il server sulla psrta specificata
+        
+        Server srv=new Server(Costanti.portaServer);
         
         //System.out.println("Avvio xbmcController "+getRbTok("VERSIONE")+"."+getRbTok("BUILD")+" sulla porta: "+port);
-       // log.toScreen("Avvio xbmcController  sulla porta: "+port, null, Logger.INFO);
-        jTextPane3.setText( jTextPane3.getText()+"Avvio xbmcController "+getRbTok("VERSIONE")+"."+getRbTok("BUILD")+" sulla porta: "+port+"\n");
+        log.toScreen("xbmcController avviato sulla porta: "+Costanti.portaServer, this.getClass(), Logger.INFO);
+        //jTextPane3.setText( jTextPane3.getText()+"Avvio xbmcController "+getRbTok("VERSIONE")+"."+getRbTok("BUILD")+" sulla porta: "+port+"\n");
         srv.start();
     }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+       
+        //salvo la configurazione su file
+        
+        try {
+            Configurazione salva=new Configurazione(Costanti.cfg_file);
+            salva.salvaSuFile();
+        } catch (IOException ex) {
+            java.util.logging.Logger.getLogger(Libreria.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        log.debugToScreen("Configurazione salvata...", this.getClass(), Logger.INFO);
+    }//GEN-LAST:event_jButton3ActionPerformed
+
+    private void jTextPane1ComponentShown(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_jTextPane1ComponentShown
+      
+    }//GEN-LAST:event_jTextPane1ComponentShown
+
+    private void jTextPane1PropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-FIRST:event_jTextPane1PropertyChange
+       
+    }//GEN-LAST:event_jTextPane1PropertyChange
 
     /**
      * @param args the command line arguments
@@ -215,7 +303,7 @@ public class Libreria extends javax.swing.JFrame {
         }
         //</editor-fold>
 
-        log= new Logger(true, "", "/xbmcController.log", jTextPane3);
+       
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
