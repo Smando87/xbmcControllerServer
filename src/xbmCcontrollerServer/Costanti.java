@@ -4,6 +4,8 @@
  */
 package xbmCcontrollerServer;
 
+import java.io.OutputStream;
+
 /**
  *
  * @author sdelprete
@@ -12,7 +14,7 @@ package xbmCcontrollerServer;
 public class Costanti {
     
     static String percorsi;
-    
+    static OutputStream os;
     static final int portaServer=9021;
     static final String cfg_file="server.cfg";
     

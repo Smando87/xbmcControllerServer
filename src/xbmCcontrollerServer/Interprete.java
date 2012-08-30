@@ -8,6 +8,8 @@ package xbmCcontrollerServer;
 import java.io.File;
 import java.io.FileFilter;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -29,8 +31,8 @@ import java.util.logging.Logger;
  * @comandi:
  */
 public class Interprete {
-  
-   
+ 
+   InputStream in;
     
     public Interprete(){
         
@@ -50,12 +52,20 @@ public class Interprete {
             
             String command=cmd.substring(0,cmd.indexOf(";"));
             if(command.equals("esegui")){
-                System.out.println("Eseguo: "+cmd.substring(cmd.indexOf(";")+1));
-                Runtime.getRuntime().exec(cmd.substring(cmd.indexOf(";")+1));
+                 Costanti.os.write((cmd.substring(cmd.indexOf(";")+1)+"\n").getBytes());
+                 Costanti.os.flush();
             }
             if(command.equals("lista_film")){
                 return lista_film();
             }
+            if(command.equals("InviaFilm")){
+                String Titolo=cmd.substring(cmd.indexOf(";")+1);
+                InviaFilm(Titolo);
+            }
+        /*    if(command.equals("Pausa")){
+                Costanti.os.write("pause\n".getBytes());
+                Costanti.os.flush();
+            }*/
            
                       
         } catch (IOException ex) {
@@ -64,7 +74,16 @@ public class Interprete {
         return "";
     }
     
-    
+    private void InviaFilm(String titolo){
+        try {
+            
+            Process p=Runtime.getRuntime().exec("vlc -I rc -f "+Costanti.percorsi.replace("\n","")+"/"+titolo);
+            in=p.getInputStream();
+            Costanti.os=p.getOutputStream();
+        } catch (IOException ex) {
+            Logger.getLogger(Interprete.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
     public String lista_film(){
       //FileFilter filter=new FileFilter("*.avi");
                  String[] percorsi=Costanti.percorsi.split("\n");
