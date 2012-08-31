@@ -30,6 +30,7 @@ public class Configurazione {
         defaultProps.setProperty("percorsi", Costanti.percorsi);
         defaultProps.setProperty("autostartServer", String.valueOf(Costanti.autostartServer));
         defaultProps.setProperty("vlc_exe", Costanti.vlcexe_path);
+        defaultProps.setProperty("hide", String.valueOf(Costanti.nascondiframe));
         defaultProps.storeToXML(new FileOutputStream(cfg_file), "Configurazione server");
     }
 
@@ -40,6 +41,7 @@ public class Configurazione {
         Costanti.percorsi=defaultProps.getProperty("percorsi","");
         Costanti.autostartServer=Boolean.parseBoolean(defaultProps.getProperty("autostartServer"));
         Costanti.vlcexe_path=defaultProps.getProperty("vlc_exe","C:\\Program Files\\VideoLAN\\VLC\\");
+        Costanti.nascondiframe=Boolean.parseBoolean(defaultProps.getProperty("hide"));
         in.close();        
     
     }

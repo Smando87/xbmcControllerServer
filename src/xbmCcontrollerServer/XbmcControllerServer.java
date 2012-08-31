@@ -14,7 +14,7 @@ import java.util.ResourceBundle;
  */
 public class XbmcControllerServer {
      final static ResourceBundle rb =  ResourceBundle.getBundle("version"); 
-
+    static Libreria l;
     /**
      * @param args the command line arguments
      */
@@ -29,7 +29,7 @@ public class XbmcControllerServer {
         else
             Costanti.islinux=true;
         
-        Libreria l=new Libreria();
+        l=new Libreria();
         l.setVisible(true);
        
     }

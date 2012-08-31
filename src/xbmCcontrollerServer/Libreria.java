@@ -22,6 +22,8 @@ import log.Logger;
 public class Libreria extends javax.swing.JFrame {
     final static ResourceBundle rb =  ResourceBundle.getBundle("version");
 
+    SysTray tray;
+    
     /**
      * Creates new form Libreria
      */
@@ -55,6 +57,8 @@ public class Libreria extends javax.swing.JFrame {
         //creo la grafica
         initComponents();
         
+        tray= new SysTray();
+       // tray.
         //inizializzo il logger
         log= new Logger(true, "", "xbmcController.log", jTextPane3);       
         
@@ -86,6 +90,8 @@ public class Libreria extends javax.swing.JFrame {
         }
         
         this.jTextFieldVlcExe.setText(Costanti.vlcexe_path);
+        
+        this.jCheckBoxNascondi.setSelected( Costanti.nascondiframe);
     }
 
     /**
@@ -117,11 +123,17 @@ public class Libreria extends javax.swing.JFrame {
         jTextFieldVlcExe = new javax.swing.JTextField();
         jButton4 = new javax.swing.JButton();
         jCheckBoxAutostartServer = new javax.swing.JCheckBox();
+        jCheckBoxNascondi = new javax.swing.JCheckBox();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         jMenu2 = new javax.swing.JMenu();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowIconified(java.awt.event.WindowEvent evt) {
+                formWindowIconified(evt);
+            }
+        });
 
         jScrollPane3.setViewportView(jTextPane3);
 
@@ -227,6 +239,8 @@ public class Libreria extends javax.swing.JFrame {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
+        jCheckBoxNascondi.setText("Nascondi se minimizzata");
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -234,6 +248,7 @@ public class Libreria extends javax.swing.JFrame {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jCheckBoxNascondi)
                     .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                         .addComponent(jPanelOpzioniWindows, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addGroup(jPanel1Layout.createSequentialGroup()
@@ -265,7 +280,9 @@ public class Libreria extends javax.swing.JFrame {
                     .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanelOpzioniWindows, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(48, 48, 48)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jCheckBoxNascondi)
+                .addGap(23, 23, 23)
                 .addComponent(jButton3)
                 .addContainerGap(69, Short.MAX_VALUE))
         );
@@ -288,7 +305,7 @@ public class Libreria extends javax.swing.JFrame {
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jTabbedPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 400, Short.MAX_VALUE)
+            .addComponent(jTabbedPane1)
         );
 
         pack();
@@ -324,6 +341,7 @@ public class Libreria extends javax.swing.JFrame {
         Costanti.vlcexe_path=this.jTextFieldVlcExe.getText();
         Costanti.percorsi=this.jTextPane1.getText();
         Costanti.autostartServer=this.jCheckBoxAutostartServer.isSelected();
+        Costanti.nascondiframe=this.jCheckBoxNascondi.isSelected();
         try {
             Configurazione salva=new Configurazione(Costanti.cfg_file);
             salva.salvaSuFile();
@@ -354,6 +372,11 @@ public class Libreria extends javax.swing.JFrame {
             this.jToggleButtonStartStopServer.setText("Start");
             srv.interrupt();
     }//GEN-LAST:event_jToggleButtonStartStopServerActionPerformed
+
+    private void formWindowIconified(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowIconified
+      if(Costanti.nascondiframe)
+        tray.hideActionPerformed(null);
+    }//GEN-LAST:event_formWindowIconified
 
     /**
      * @param args the command line arguments
@@ -406,6 +429,7 @@ public class Libreria extends javax.swing.JFrame {
     private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
     private javax.swing.JCheckBox jCheckBoxAutostartServer;
+    private javax.swing.JCheckBox jCheckBoxNascondi;
     private javax.swing.JFileChooser jFileChooser1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;

@@ -22,4 +22,6 @@ public class Costanti {
     public static String vlcexe_path;
     public static boolean autostartServer;
     
+    public static boolean nascondiframe;
+    
 }
