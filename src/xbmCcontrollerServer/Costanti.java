@@ -17,5 +17,9 @@ public class Costanti {
     static OutputStream os;
     static final int portaServer=9021;
     static final String cfg_file="server.cfg";
+   
+    public static boolean islinux;
+    public static String vlcexe_path;
+    public static boolean autostartServer;
     
 }

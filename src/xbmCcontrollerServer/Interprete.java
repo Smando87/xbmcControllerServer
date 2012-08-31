@@ -76,8 +76,12 @@ public class Interprete {
     
     private void InviaFilm(String titolo){
         try {
-            
-            Process p=Runtime.getRuntime().exec("vlc -I rc -f "+Costanti.percorsi.replace("\n","")+"/"+titolo);
+            Process p = null;
+            if(Costanti.islinux) {
+                p=Runtime.getRuntime().exec("vlc -I rc -f "+Costanti.percorsi.replace("\n","")+"/"+titolo);
+            }else{
+                p=Runtime.getRuntime().exec("\""+Costanti.vlcexe_path+"vlc.exe\" -I rc -f "+Costanti.percorsi.replace("\n","")+"/"+titolo);
+            }
             in=p.getInputStream();
             Costanti.os=p.getOutputStream();
         } catch (IOException ex) {
@@ -91,7 +95,7 @@ public class Interprete {
                  String filesString = "";
                  File f;
                  for(int j = 0; j< percorsi.length;j++){                    
-                    f= new File(percorsi[j]);
+                    f= new File(percorsi[j].replace("\n", ""));
                     File[] files=f.listFiles();  
                     for(int i =0; i< files.length;i++)
                         if(files[i].getName().contains(".avi"))

@@ -34,9 +34,11 @@ public class Libreria extends javax.swing.JFrame {
          */
         try {
             for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
+                System.out.println(info.getClassName());
+                if ("Windows".equals(info.getName())) {
+                    
                     javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
+                 //   break;
                 }
             }
         } catch (ClassNotFoundException ex) {
@@ -72,6 +74,18 @@ public class Libreria extends javax.swing.JFrame {
         
         //visualizzo a video i percorsi di ricerca caricati dalla configurazione
         this.jTextPane1.setText(Costanti.percorsi);
+        
+        if(Costanti.islinux)
+            this.jPanelOpzioniWindows.setVisible(false);
+        
+        this.jCheckBoxAutostartServer.setSelected(Costanti.autostartServer);
+        if(Costanti.autostartServer){
+            startServer();
+            this.jToggleButtonStartStopServer.setSelected(true);
+            this.jToggleButtonStartStopServer.setText("Stop");
+        }
+        
+        this.jTextFieldVlcExe.setText(Costanti.vlcexe_path);
     }
 
     /**
@@ -86,9 +100,9 @@ public class Libreria extends javax.swing.JFrame {
         jFileChooser1 = new javax.swing.JFileChooser();
         jTabbedPane1 = new javax.swing.JTabbedPane();
         jPanel2 = new javax.swing.JPanel();
-        jButton2 = new javax.swing.JButton();
         jScrollPane3 = new javax.swing.JScrollPane();
         jTextPane3 = new javax.swing.JTextPane();
+        jToggleButtonStartStopServer = new javax.swing.JToggleButton();
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         jButton1 = new javax.swing.JButton();
@@ -98,43 +112,48 @@ public class Libreria extends javax.swing.JFrame {
         jScrollPane2 = new javax.swing.JScrollPane();
         jTextPane2 = new javax.swing.JTextPane();
         jButton3 = new javax.swing.JButton();
+        jPanelOpzioniWindows = new javax.swing.JPanel();
+        jLabel3 = new javax.swing.JLabel();
+        jTextFieldVlcExe = new javax.swing.JTextField();
+        jButton4 = new javax.swing.JButton();
+        jCheckBoxAutostartServer = new javax.swing.JCheckBox();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         jMenu2 = new javax.swing.JMenu();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        jButton2.setText("Avvia");
-        jButton2.addActionListener(new java.awt.event.ActionListener() {
+        jScrollPane3.setViewportView(jTextPane3);
+
+        jToggleButtonStartStopServer.setText("Start");
+        jToggleButtonStartStopServer.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton2ActionPerformed(evt);
+                jToggleButtonStartStopServerActionPerformed(evt);
             }
         });
-
-        jScrollPane3.setViewportView(jTextPane3);
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 754, Short.MAX_VALUE)
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jButton2)
-                .addContainerGap(685, Short.MAX_VALUE))
-            .addComponent(jScrollPane3)
+                .addComponent(jToggleButtonStartStopServer)
+                .addContainerGap())
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jButton2)
+                .addComponent(jToggleButtonStartStopServer)
                 .addGap(18, 18, 18)
                 .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 320, Short.MAX_VALUE))
         );
 
         jTabbedPane1.addTab("Server", jPanel2);
 
-        jLabel1.setText("Percorsi");
+        jLabel1.setText("Percorsi Media");
 
         jButton1.setText("+");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
@@ -157,7 +176,7 @@ public class Libreria extends javax.swing.JFrame {
 
         jLabel2.setText("Filtro(uno per riga)");
 
-        jTextPane2.setText(".avi\n.mpeg\n.3gp");
+        jTextPane2.setText(".avi");
         jScrollPane2.setViewportView(jTextPane2);
 
         jButton3.setText("Salva");
@@ -167,6 +186,47 @@ public class Libreria extends javax.swing.JFrame {
             }
         });
 
+        jLabel3.setText("Percorso vlc.exe");
+
+        jTextFieldVlcExe.setText("C:\\Program Files\\VideoLAN\\VLC");
+
+        jButton4.setText("+");
+        jButton4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton4ActionPerformed(evt);
+            }
+        });
+
+        jCheckBoxAutostartServer.setText("AutoStart Sever");
+
+        javax.swing.GroupLayout jPanelOpzioniWindowsLayout = new javax.swing.GroupLayout(jPanelOpzioniWindows);
+        jPanelOpzioniWindows.setLayout(jPanelOpzioniWindowsLayout);
+        jPanelOpzioniWindowsLayout.setHorizontalGroup(
+            jPanelOpzioniWindowsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanelOpzioniWindowsLayout.createSequentialGroup()
+                .addGroup(jPanelOpzioniWindowsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanelOpzioniWindowsLayout.createSequentialGroup()
+                        .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jTextFieldVlcExe, javax.swing.GroupLayout.PREFERRED_SIZE, 350, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jButton4))
+                    .addComponent(jCheckBoxAutostartServer))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+        jPanelOpzioniWindowsLayout.setVerticalGroup(
+            jPanelOpzioniWindowsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanelOpzioniWindowsLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanelOpzioniWindowsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel3)
+                    .addComponent(jTextFieldVlcExe, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jButton4))
+                .addGap(18, 18, 18)
+                .addComponent(jCheckBoxAutostartServer)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -174,37 +234,40 @@ public class Libreria extends javax.swing.JFrame {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                        .addComponent(jPanelOpzioniWindows, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addGroup(jPanel1Layout.createSequentialGroup()
-                            .addComponent(jLabel2)
+                            .addGap(0, 0, Short.MAX_VALUE)
+                            .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                            .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 343, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGroup(jPanel1Layout.createSequentialGroup()
-                            .addComponent(jLabel1)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 347, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                             .addComponent(jButton1)
+                            .addGap(34, 34, 34))
+                        .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
+                            .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 343, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 347, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addComponent(jButton3))
-                .addContainerGap(306, Short.MAX_VALUE))
+                .addContainerGap(225, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(jLabel1)
-                        .addComponent(jButton1))
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jLabel1)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jButton1))
                 .addGap(19, 19, 19)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(jLabel2)
-                        .addGap(101, 101, 101)
-                        .addComponent(jButton3))
+                    .addComponent(jLabel2)
                     .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(113, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jPanelOpzioniWindows, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(48, 48, 48)
+                .addComponent(jButton3)
+                .addContainerGap(69, Short.MAX_VALUE))
         );
 
         jTabbedPane1.addTab("Configurazione", jPanel1);
@@ -225,7 +288,7 @@ public class Libreria extends javax.swing.JFrame {
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jTabbedPane1)
+            .addComponent(jTabbedPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 400, Short.MAX_VALUE)
         );
 
         pack();
@@ -238,26 +301,29 @@ public class Libreria extends javax.swing.JFrame {
        this.jFileChooser1.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY );     
        this.jFileChooser1.showOpenDialog(this);
        File cartella=this.jFileChooser1.getSelectedFile();
-       this.jTextPane1.setText( this.jTextPane1.getText()+cartella.getAbsolutePath()+"\n");
+       
+       //this.jTextPane1.setText( this.jTextPane1.getText()+cartella.getAbsolutePath()+"\n");
+       //solo una cartella
+       this.jTextPane1.setText(cartella.getAbsolutePath()+"\n");
        Costanti.percorsi=this.jTextPane1.getText();
     }//GEN-LAST:event_jButton1ActionPerformed
-
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        
-        //ini<zializzo ed avvio il server sulla psrta specificata
-        
-        Server srv=new Server(Costanti.portaServer);
+    Server srv;
+    private void startServer(){
+    
+         srv=new Server(Costanti.portaServer);
         
         //System.out.println("Avvio xbmcController "+getRbTok("VERSIONE")+"."+getRbTok("BUILD")+" sulla porta: "+port);
         log.toScreen("xbmcController avviato sulla porta: "+Costanti.portaServer, this.getClass(), Logger.INFO);
         //jTextPane3.setText( jTextPane3.getText()+"Avvio xbmcController "+getRbTok("VERSIONE")+"."+getRbTok("BUILD")+" sulla porta: "+port+"\n");
         srv.start();
-    }//GEN-LAST:event_jButton2ActionPerformed
-
+    }
+    
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
        
         //salvo la configurazione su file
-        
+        Costanti.vlcexe_path=this.jTextFieldVlcExe.getText();
+        Costanti.percorsi=this.jTextPane1.getText();
+        Costanti.autostartServer=this.jCheckBoxAutostartServer.isSelected();
         try {
             Configurazione salva=new Configurazione(Costanti.cfg_file);
             salva.salvaSuFile();
@@ -274,6 +340,20 @@ public class Libreria extends javax.swing.JFrame {
     private void jTextPane1PropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-FIRST:event_jTextPane1PropertyChange
        
     }//GEN-LAST:event_jTextPane1PropertyChange
+
+    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jButton4ActionPerformed
+
+    private void jToggleButtonStartStopServerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jToggleButtonStartStopServerActionPerformed
+        if(this.jToggleButtonStartStopServer.isSelected()){
+            startServer();
+            this.jToggleButtonStartStopServer.setText("Stop");
+        }
+        else
+            this.jToggleButtonStartStopServer.setText("Start");
+            srv.interrupt();
+    }//GEN-LAST:event_jToggleButtonStartStopServerActionPerformed
 
     /**
      * @param args the command line arguments
@@ -323,22 +403,27 @@ public class Libreria extends javax.swing.JFrame {
      }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
+    private javax.swing.JButton jButton4;
+    private javax.swing.JCheckBox jCheckBoxAutostartServer;
     private javax.swing.JFileChooser jFileChooser1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
+    private javax.swing.JPanel jPanelOpzioniWindows;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JTabbedPane jTabbedPane1;
+    private javax.swing.JTextField jTextFieldVlcExe;
     private javax.swing.JTextPane jTextPane1;
     private javax.swing.JTextPane jTextPane2;
     public static javax.swing.JTextPane jTextPane3;
+    private javax.swing.JToggleButton jToggleButtonStartStopServer;
     // End of variables declaration//GEN-END:variables
 }

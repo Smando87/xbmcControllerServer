@@ -5,6 +5,7 @@
 package xbmCcontrollerServer;
 
 import java.util.MissingResourceException;
+import java.util.Properties;
 import java.util.ResourceBundle;
 
 /**
@@ -20,8 +21,16 @@ public class XbmcControllerServer {
     public static void main(String[] args) {
        
         
+        //controllo se sono windows o linux
+        Properties p=System.getProperties();
+        String sistema=p.getProperty("sun.desktop");
+        if(sistema.contains("windows"))
+            Costanti.islinux=false;
+        else
+            Costanti.islinux=true;
+        
         Libreria l=new Libreria();
-        l.show();
+        l.setVisible(true);
        
     }
     
